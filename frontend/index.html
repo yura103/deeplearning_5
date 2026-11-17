@@ -275,7 +275,7 @@ $('go').addEventListener('click', async () => {
 const ROUTE = { '1단계-1등': '사진 AI가 확실하게 알아본 음식이에요',
                 '1단계-합치기': '사진 AI가 헷갈려서 후보 3개 중 위험한 쪽으로 판정했어요',
                 '1단계-합치기+CLIP': '사진 AI가 헷갈려서 후보 3개와 비슷한 레시피를 함께 봤어요',
-                '2단계': '처음 보는 음식이라 비슷한 레시피 30개로 계산했어요' };
+                '2단계': '사진과 비슷한 레시피 30개와 AI 이름 추정으로 판정했어요' };
 
 function evidence(d, similar) {
   /* 사진 AI(분류 모델) · 레시피 검색(CLIP) · AI 이름 추정(LLM)을 알레르기 줄과 같은 모양으로.
@@ -284,9 +284,9 @@ function evidence(d, similar) {
   const row = (name, val, sub) => `<div class="row"><span class="name">${name}</span>
     <span class="val">${val}${sub ? `<small>${sub}</small>` : ''}</span></div>`;
   const rows = [];
-  if (top) rows.push(row('사진 AI', `${esc(nice(top.food))} ${Math.round(top.prob * 100)}%`,
-    d.route === '2단계' ? '확신이 낮아 레시피 검색으로 넘김'
-    : d.route === '1단계-1등' ? '이 음식의 레시피 통계로 판정' : '후보: ' + d.candidates.slice(0, 3).map(c => esc(nice(c.food))).join(', ')));
+  // 2단계는 분류 모델 결과를 판정에 안 쓰므로(judge.analyze) 보여 주지 않음 → CLIP + AI 근거만
+  if (top && d.route !== '2단계') rows.push(row('사진 AI', `${esc(nice(top.food))} ${Math.round(top.prob * 100)}%`,
+    d.route === '1단계-1등' ? '이 음식의 레시피 통계로 판정' : '후보: ' + d.candidates.slice(0, 3).map(c => esc(nice(c.food))).join(', ')));
   if (similar.length) rows.push(row('비슷한 레시피', similar.map(f => esc(nice(f))).join(' · '), 'CLIP 사진 검색 상위 3개'));
   if (g) {
     const same = /LLM 이름 일치/.test(src), used = /LLM (이름|재료) 추정/.test(src);
