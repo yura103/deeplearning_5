@@ -100,7 +100,7 @@
 | 평가 (`docs/역할분담.md`) | 파일 | 실행 |
 |---|---|---|
 | ③ 1등만 vs 후보 합치기 | `merge_eval.py` → `합치기_결과.md`·`.csv` | Colab에서 `notebooks/06_시험사진_예측.ipynb`를 돌려 `convnext_test_top5.csv`를 받은 뒤 `python -m evaluation.merge_eval <그 파일>` |
-| ② 룰 판정 vs LLM 직접 판정 | (유라님 `llm/` 함수가 나오면) | |
+| ② 룰 판정 vs LLM 직접 판정 | `llm_vs_rule.py` → `LLM비교_결과.md`·`.csv`, AI 답 원문 `llm_답변.csv` | 유라님 `llm.guess.guess_ingredients`가 연결되면 `python -m evaluation.llm_vs_rule` (기본 3번 물음, 연결 전이면 알리고 끝남) |
 
 ## 사람 확인 순서
 1. `정답지_근거.md`를 열고 음식마다 링크 3개를 열어, 표에 적힌 재료가 레시피에 정말 있는지 본다. 위 "재료 → 항목 읽는 법"이 적용된 칸(간장→밀, 굴소스, 두반장, 커리 페이스트)을 특히 본다.
