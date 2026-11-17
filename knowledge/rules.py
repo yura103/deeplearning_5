@@ -15,14 +15,20 @@ FORMS = ['soup', 'salad', 'casserole', 'dip', 'sauce', 'stew', 'pie', 'sandwich'
          'chili', 'cake', 'bread', 'pasta', 'burger']
 
 RULES = {  # 한국 알레르기 표시 19항목: (포함, 제외)
-    '알류': ('(?<![a-z])eggs?(?![a-z])|mayonnaise|meringue', ''),
-    '우유': ('milk|cream|butter|cheese|yogurt|yoghurt|whey|ghee|custard',
+    '알류': ('(?<![a-z])eggs?(?![a-z])|mayonnaise|meringue|ladyfinger|savoiardi', ''),
+    '우유': ('milk|cream|butter|cheese|yogurt|yoghurt|whey|ghee|custard'
+           '|mascarpone|ricotta|mozzarella|parmesan|parmigiano|half-and-half|half and half',
            'coconut milk|almond milk|soy milk|oat milk|rice milk|coconut cream|cream of tartar|peanut butter|almond butter|cocoa butter|nut butter'),
     '메밀': ('buckwheat|soba', ''),
     '땅콩': ('peanut', ''),
     '대두': ('soy|tofu|edamame|miso|tempeh', ''),
-    '밀': ('wheat|flour|bread|pasta|spaghetti|macaroni|couscous|noodle|cracker|panko|semolina|bulgur|soy sauce',
-          'rice flour|rice noodle|corn flour|cornflour|almond flour|coconut flour|chickpea flour|buckwheat flour|gluten-free|gluten free'),
+    # 2026-11-17 추가 (서준영 정답지 ③: baklava·tiramisu 밀 놓침 = phyllo·ladyfingers 누락): 반죽·과자·파스타 모양 이름
+    '밀': ('wheat|flour|bread|pasta|spaghetti|macaroni|couscous|noodle|cracker|panko|semolina|bulgur|soy sauce'
+          '|phyllo|(?<![a-z])fill?o(?![a-z])|ladyfinger|savoiardi|pastry|pastries|dough|crust|crouton|biscuit|cookie|graham'
+          '|(?<![a-z])cakes?(?![a-z])|tortilla|(?<![a-z])pitas?(?![a-z])|naan|bagel|croissant|wonton|seitan|spelt|farro'
+          '|gnocchi|orzo|lasagn|ravioli|tortellini|fettuccin|linguin|penne|rigatoni|fusilli|udon',
+          'rice flour|rice noodle|corn flour|cornflour|almond flour|coconut flour|chickpea flour|buckwheat flour|gluten-free|gluten free'
+          '|rice cake|corn tortilla|cauliflower crust'),
     '고등어': ('mackerel', ''),
     '게': ('(?<![a-z])crab(?![a-z])|crabmeat|crab meat', ''),
     '새우': ('shrimp|prawn', ''),
@@ -73,3 +79,14 @@ def allergen_flags(text):
     import pandas as pd
     return pd.DataFrame({k: (text.str.replace(exc, ' ', regex=True) if exc else text).str.contains(inc, regex=True)
                          for k, (inc, exc) in RULES.items()})
+
+
+if __name__ == '__main__':  # 자체 검사: python -m knowledge.rules
+    import pandas as pd
+    t = pd.Series(['phyllo dough , walnuts , butter', 'ladyfingers , mascarpone , espresso', 'filo pastry , honey',
+                   'corn tortillas , beef', 'rice cakes , gochujang', 'almond flour , sugar', 'cake flour , eggs',
+                   'fillet of sole , lemon', 'pita bread', 'rice noodles , fish sauce', 'puff pastry , apples'])
+    f = allergen_flags(t)
+    assert f['밀'].tolist() == [True, True, True, False, False, False, True, False, True, False, True], f['밀'].tolist()
+    assert f.loc[1, '알류'] and f.loc[1, '우유'] and f.loc[0, '호두']
+    print('rules 자체 검사 통과')
