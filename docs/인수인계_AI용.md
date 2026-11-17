@@ -42,7 +42,7 @@
 - ❓ `explain`의 '안전' 금지어 필터가 설명을 너무 자주 버릴 가능성 (유라)
 
 ## 6. 다음 할 일 (우선순위)
-0. **박중현: `notebooks/03-2_규칙수정_표다시계산.ipynb` 실행** (코랩 CPU 5분). `rules.py` 밀 규칙에 phyllo·ladyfingers·pastry·파스타 이름 등 추가(준영 ③에서 baklava·tiramisu 밀 놓침 417칸이 규칙 누락이었음), 우유에 mascarpone·parmesan 등, 알류에 ladyfingers. 결과 `표/food_table_v2.csv` → 깃 `knowledge/food_table.csv`로 반영, `clip_base/index_meta.parquet` 19항목도 갱신(예전 것 `index_meta_v1.parquet`). 그다음 준영 ③ 채점을 새 표 + Base 설정으로 다시
+0. ✅ **`notebooks/03-2` 실행 완료, `food_table.csv` 새 규칙으로 교체** (진행상황 13). 앱 서버는 드라이브 `clip_base/index_meta.parquet` 다시 복사할 것. 아래는 원래 메모: `rules.py` 밀 규칙에 phyllo·ladyfingers·pastry·파스타 이름 등 추가(준영 ③에서 baklava·tiramisu 밀 놓침 417칸이 규칙 누락이었음), 우유에 mascarpone·parmesan 등, 알류에 ladyfingers. 결과 `표/food_table_v2.csv` → 깃 `knowledge/food_table.csv`로 반영, `clip_base/index_meta.parquet` 19항목도 갱신(예전 것 `index_meta_v1.parquet`). 그다음 준영 ③ 채점을 새 표 + Base 설정으로 다시
 1. **서준영: 알레르기 정답지 20~30종 → 룰 vs LLM 직접 판정의 주의놓침(FN) 비교** — 발표의 핵심 숫자인데 아직 없음
 2. 서준영: LLM API 키를 코랩 Secrets / `.env`에 넣어 06 재실행 (Base + 0.95/0.6 + LLM)
 3. 박중현: `notebooks/04-4_CLIP_LLM_교차확인_비교.ipynb` **실행** (노트북 완성, 코랩 CPU + LLM 키). 처음 보는 음식 74종×5장 / 아는 음식 101종×2장, 자기 레시피 글은 검색에서 뺌. ① 2단계만: CLIP만 vs CLIP+LLM ② 앱 전체: T_ONE 0.8/0.95 × LLM 끔/켬. 결과 `찍먹_실험기록/표/04-4_*.csv`, LLM 답은 `찍먹_실험기록/llm_cache_04-4/`(이어 돌리기)
