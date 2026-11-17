@@ -65,17 +65,24 @@ def analyze_photo(image: UploadFile = File(...), allergens: str = Form('')):
 
     mine = [a.strip() for a in allergens.split(',') if a.strip()]
     cands = predict(model(), img)
-    guesses = []
+    guesses, hits = [], []
+
+    def clip():
+        """CLIP 검색 (요청마다 한 번만). 1등 확률이 높아도 먼저 봄: 소바→ramen 0.97 같은 착각 확인용 (judge.clip_says_new)"""
+        if not hits:
+            hits.append(search.search(img))
+        return hits[0]
 
     def stage2():
-        """처음 보는 음식: CLIP 검색 + LLM 이름 추정(동시에) → 교차 확인. LLM 실패면 CLIP만."""
+        """처음 보는 음식·애매한 음식: CLIP 검색 + LLM 이름 추정 → 교차 확인. LLM 실패면 CLIP만."""
         job = _POOL.submit(guess_name, img)
-        hit = search.search(img)
+        hit = clip()
         guesses[:] = _wait(job) or []
         return search.crosscheck(hit, guesses, lambda n: _wait(_POOL.submit(guess_ingredients, n)))
 
     try:
-        result = analyze(cands, mine, stage2 if search.available() else None)  # 검색 목록(knowledge/index/) 있을 때만
+        ok = search.available()  # 검색 목록(knowledge/index/) 있을 때만
+        result = analyze(cands, mine, stage2 if ok else None, clip if ok else None)
     except ValueError as e:  # 모르는 알레르기 이름
         raise HTTPException(400, str(e))
     result['candidates'] = [{'food': c, 'prob': round(p, 4)} for c, p in cands]

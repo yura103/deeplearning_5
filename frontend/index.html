@@ -274,7 +274,7 @@ $('go').addEventListener('click', async () => {
 // 어떤 길로 판정했는지 한 줄 (judge.analyze의 route)
 const ROUTE = { '1단계-1등': '사진 AI가 확실하게 알아본 음식이에요',
                 '1단계-합치기': '사진 AI가 헷갈려서 후보 3개 중 위험한 쪽으로 판정했어요',
-                '1단계-합치기+CLIP': '사진 AI가 헷갈려서 후보 3개와 비슷한 레시피를 함께 봤어요',
+                '1단계-합치기+CLIP': '사진 AI 후보와 비슷한 레시피 검색을 함께 보고 위험한 쪽으로 판정했어요',
                 '2단계': '사진과 비슷한 레시피 30개와 AI 이름 추정으로 판정했어요' };
 
 function evidence(d, similar) {
@@ -305,6 +305,8 @@ function render(d) {
   // 2단계 제목: AI 이름(확신 0.5 이상) → 없으면 검색 1등. 확실하지 않으니 '같아요'
   const title = d.route === '2단계'
       ? (g && g.conf >= 0.5 ? `${nice(g.food)} 같아요` : similar.length ? `${nice(similar[0])} 비슷한 음식` : '처음 보는 음식 같아요')
+      // 합치기+CLIP에서 검색 1등이 후보에 없으면 둘 다 보여 줌 (예: 소바 사진 → 'ramen 또는 soba')
+      : similar.length && !d.foods.includes(similar[0]) ? `${nice(d.foods[0])} 또는 ${nice(similar[0])}`
       : d.foods.length > 1 ? `${nice(d.foods[0])} 또는 비슷한 음식` : nice(d.foods[0]);
   const rows = Object.entries(d.verdict).map(([a, lv]) =>
     `<div class="row"><span class="name">${esc(a)}</span><span class="lv ${cls(lv)}">${esc(lv)}</span></div>`).join('');

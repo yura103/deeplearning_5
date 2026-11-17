@@ -53,7 +53,8 @@ predict(model, pil_img, k=3) -> [(class, prob), ...]        # 확률 높은 순
  'source': '레시피 통계'}              # 2단계는 'CLIP 검색', LLM 재료 추정은 'LLM 추정'
 
 # 판정 (knowledge/judge.py)
-analyze(cands, my_allergens, stage2=None) -> {   # stage2 = lambda: search(img), 처음 보는 음식일 때만 부름
+analyze(cands, my_allergens, stage2=None, peek=None) -> {   # stage2 = CLIP 검색 + LLM 교차 확인 (애매·처음 보는 음식), peek = CLIP 검색만.
+#   1등 확률 ≥T_ONE이어도 peek 결과 1등이 분류 모델이 모르는 음식이고 검색 30개 중 절반 이상이면 합치기+CLIP (judge.clip_says_new, 예: 소바→ramen 0.97)
   'route': '1단계-1등' | '1단계-합치기' | '1단계-합치기+CLIP' | '2단계',   # 합치기(애매함)는 stage2 결과도 같이 합침
   'foods': [...], 'similar': [CLIP이 찾은 비슷한 음식 3개] (없으면 []), 'verdict': {알레르기: '주의'|'확인 필요'|'해당 없음'|'정보 부족'},
   'other_caution': [...], 'n_recipes': int, 'nutrition': {...}, 'source': str}

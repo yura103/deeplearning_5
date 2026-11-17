@@ -9,12 +9,25 @@
 
 자체 검사: 저장소 루트에서  python -m knowledge.judge
 """
+from pathlib import Path
+
 from knowledge.lookup import ALLERGENS, row
 
 # EDA v2 임시 기준. 정답지·검증 데이터로 다시 정한다 (docs/plan.md 6, 9번)
 CAUTION, CHECK = 0.6, 0.2   # 레시피 비율 60% 이상 주의, 20% 이상 확인 필요
 MIN_RECIPES = 30            # 이보다 적으면 '해당 없음' 대신 '정보 부족'
 T_ONE, T_KNOWN = 0.95, 0.6  # 보정된(T) 1등 확률 ≥0.95 → 1등만 / ≥0.6 → 상위 3개 합치기(+CLIP) / 그 아래 → 2단계. 근거: notebooks/05 (Base), docs/진행상황.md 12
+
+
+KNOWN = set((Path(__file__).parent.parent / 'modeling/classes.txt').read_text(encoding='utf-8').split())  # 분류 모델이 아는 101종
+NEW_SHARE = 0.5   # CLIP 검색 30개 중 이 비율 이상이 '분류 모델이 모르는 음식' 하나면 → 1등 확률이 높아도 합치기+CLIP
+
+
+def clip_says_new(foods):
+    """CLIP 검색 결과 [(음식, 유사도 합)] → 분류 모델이 모르는 음식을 강하게 가리키나.
+    예: 소바 사진 → 분류 모델은 소바를 몰라 ramen 0.97, CLIP은 soba 다수 → 메밀을 놓치지 않게 합침."""
+    total = sum(s for _, s in foods)
+    return bool(foods) and total > 0 and foods[0][0] not in KNOWN and foods[0][1] / total >= NEW_SHARE
 
 
 def decide(cands):
@@ -51,11 +64,16 @@ def judge(r, my_allergens):
                 n_recipes=r['n_recipes'], nutrition=r['nutrition'], source=r['source'])
 
 
-def analyze(cands, my_allergens, stage2=None):
+def analyze(cands, my_allergens, stage2=None, peek=None):
     """모델 후보 → 판정.
     stage2: 처음 보는 음식일 때 부르는 함수 () -> (비율 줄, [(음식, 점수)]) — 백엔드가 search.search(사진)를 감싸 넘김.
-    없거나(검색 목록 없음) None을 돌려주면 '확인 필요'로 돌려줌."""
+    없거나(검색 목록 없음) None을 돌려주면 '확인 필요'로 돌려줌.
+    peek: CLIP 검색만(LLM 없이) 하는 함수, 같은 모양. 1등 확률이 높아도 CLIP이 모르는 음식을 가리키면 합치기로 (clip_says_new)."""
     route = decide(cands)
+    if route == 'one' and peek:
+        hit = peek()
+        if hit and clip_says_new(hit[1]):
+            route = 'merge'
     use = cands[:1] if route == 'one' else cands[:3]
     rows = [r for c, _ in use if (r := row(c))] if route != 'unknown' else []
     if not rows:  # 처음 보는 음식 → 2단계 (CLIP 검색, 같은 규칙으로 판정)
@@ -104,6 +122,16 @@ if __name__ == '__main__':
     mc = analyze(amb, ['새우'], stage2=lambda: (fake, [('pad_thai', 20.1)]))
     assert mc['route'] == '1단계-합치기+CLIP' and mc['verdict']['새우'] == '주의' and mc['similar'] == ['pad_thai']
     assert analyze([('ramen', 0.97)], ['새우'], stage2=lambda: (fake, []))['route'] == '1단계-1등'  # 확신 높으면 검색 안 함
+
+    # 소바 사진 → 분류 모델은 소바를 몰라 ramen 0.97. CLIP이 soba(모르는 음식)를 강하게 가리키면 합치기 → 메밀을 안 놓침
+    soba = (row('soba'), [('soba', 20.0), ('ramen', 4.0)])
+    assert 'soba' not in KNOWN and row('soba')['메밀'] >= CAUTION
+    sb = analyze([('ramen', 0.97), ('pho', 0.02), ('udon', 0.01)], ['메밀'], stage2=lambda: soba, peek=lambda: soba)
+    assert sb['route'] == '1단계-합치기+CLIP' and sb['verdict']['메밀'] == '주의' and sb['similar'][0] == 'soba'
+    ok = (row('ramen'), [('ramen', 20.0), ('soba', 4.0)])    # CLIP도 아는 음식(ramen)이면 그대로 1등
+    assert analyze([('ramen', 0.97)], ['메밀'], stage2=lambda: ok, peek=lambda: ok)['route'] == '1단계-1등'
+    weak = (row('soba'), [('soba', 8.0), ('ramen', 7.0), ('pho', 6.0)])   # 모르는 음식이 절반 미만이면 그대로
+    assert analyze([('ramen', 0.97)], ['메밀'], peek=lambda: weak)['route'] == '1단계-1등'
     try:
         judge(row('ramen'), ['peanut'])
         raise AssertionError('잘못된 항목을 받아들임')

@@ -17,7 +17,7 @@
 ## 3. 앱 흐름 (코드 기준)
 1. `modeling/model.py` `predict` → 상위 3개 (클래스, **보정된** 확률). 보정: logit / temperature (`modeling/calibration.json`의 `model`이 불러온 모델과 같을 때만)
 2. `knowledge/judge.py` `analyze`:
-   - 1등 ≥ `T_ONE`(0.95) → `1단계-1등`: 표(`food_table.csv`) 비율 한 줄
+   - 1등 ≥ `T_ONE`(0.95) → `1단계-1등`: 표(`food_table.csv`) 비율 한 줄. **단, CLIP 검색을 먼저 보고** 검색 1등이 분류 모델이 모르는 음식(74종 등)이고 검색 30개 중 절반 이상이면 합치기+CLIP으로 내림 (소바 사진 → ramen 0.97 착각 → 메밀 놓침 방지, `judge.clip_says_new`)
    - ≥ `T_KNOWN`(0.6) → `1단계-합치기`: 상위 3개 표 비율 중 **가장 위험한 쪽(최대값)**. 검색 목록이 있으면 CLIP 2단계 결과도 합침 → `1단계-합치기+CLIP`
    - 그 아래 → `2단계`: `stage2()`
 3. `backend/main.py` `stage2`: LLM `guess_name`(병렬) + `search.search`(기본 CLIP, 레시피 top-30 → 비율) → `search.crosscheck` (LLM 이름이 CLIP 상위 3개와 다르면 그 음식의 근거를 **`확인 필요`(0.5)까지만** 올림)
