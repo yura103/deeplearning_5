@@ -1,1 +1,1 @@
-{"model": "convnext_base", "temperature": 0.838, "T_ONE": 0.95, "T_KNOWN": 0.6, "source": "notebooks/05 (주한솔, Base). T_ONE은 한솔 제안 0.8 대신 0.95 (처음 보는 음식이 1단계로 새는 비율 0.427→0.228)"}
+{"model": "convnext_base", "temperature": 0.838, "T_ONE": 0.95, "T_KNOWN": 0.6, "source": "notebooks/05 (주한솔). temperature 0.838은 exp003으로 구한 값 — 앱 모델 exp004는 같은 학습 설정(라벨 스무딩 0.1 등)이라 그대로 쓰되, 05를 MODEL='base_exp004'로 다시 돌리면 이 값을 바꾼다. T_ONE은 한솔 제안 0.8 대신 0.95 (처음 보는 음식이 1단계로 새는 비율 0.427→0.228)"}

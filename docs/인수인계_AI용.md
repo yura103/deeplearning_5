@@ -1,4 +1,4 @@
-# 인수인계 (AI가 먼저 읽을 현재 상태) — 2026-11-17 기준
+# 인수인계 (AI가 먼저 읽을 현재 상태) — 2026-11-22 기준
 
 > AI 코딩 도구(Claude Code · Codex · Gemini)가 새 대화를 시작할 때 이 파일 → [`AGENTS.md`](../AGENTS.md)(규칙·함수 모양) → [`진행상황.md`](진행상황.md)(실험 숫자 전체) 순서로 읽는다.
 > 이 파일은 "지금 어디까지 왔고 다음에 뭘 해야 하는지"만 적는다. 바뀌면 날짜와 함께 고친다.
@@ -27,7 +27,8 @@
 ## 4. 이번에 정한 것 (2026-11-17)
 | 결정 | 내용 | 이유 |
 |---|---|---|
-| 분류 모델 | 한솔 **ConvNeXt-Base** (timm `convnext_base.fb_in22k_ft_in1k`, EMA) | test top-1 93.37% / top-5 99.10% (Tiny 88.8%). CPU 458ms/장, 메모리 문제 없음 |
+| 분류 모델 (11-22 교체) | 한솔 **exp004** (드라이브 `best/convnext_base_exp004/best.pt`): 최대 24에폭 + 얼리스탑, 12에폭이 최고, test 93.46% / top-5 99.05%. 전처리·구조는 exp003과 같아 코드 변경 없음, 보정 T 0.838(exp003 값)을 그대로 씀 → `05`를 `MODEL='base_exp004'`로 다시 돌리면 갱신 | exp003 대비 test +0.09%p (차이 작음). 한솔 최종 모델 |
+| (예전) 분류 모델 | 한솔 **ConvNeXt-Base** exp003 (timm `convnext_base.fb_in22k_ft_in1k`, EMA) | test top-1 93.37% / top-5 99.10% (Tiny 88.8%). CPU 458ms/장, 메모리 문제 없음 |
 | `model.py` | 내 버전(종류별 전처리, 보정 가드) + 유라 버전(가중치 모양으로 tiny/small/base/large 판별, `_orig_mod.`/`module.` 접두어 제거) 합침 | 둘 다 장점이라 합침 |
 | 보정 | T = 0.838 (T<1: 모델이 **덜** 확신함) → ECE 0.065 → 0.017, NLL 0.307 → 0.259 | 한솔 05 |
 | 기준값 | `T_ONE, T_KNOWN = 0.95, 0.6` (한솔 제안은 0.8 / 0.6) | 한솔 05 표 A(검증, 음식 단위로 나눈 처음 보는 음식): T_ONE 0.8이면 처음 보는 음식의 **42.7%가 1단계로 샘** → 엉뚱한 음식 표로 판정. 0.95면 22.8%. 대신 아는 음식 1단계 비율 87.3% → 74.1% (나머지는 합치기+CLIP으로 가서 경고가 조금 늘 뿐 안전). 알레르기 앱은 놓침이 더 위험하므로 0.95. **한솔님과 합의 필요**, 바꾸려면 `judge.py` 한 줄 + `calibration.json` |
@@ -67,5 +68,6 @@
 | `llm/client.py`, `guess.py`, `explain.py`, `check.py` | LLM 호출(Gemini 기본, `LLM_PROVIDER=groq`면 Qwen), 이름/재료 추정, 설명, 연결 확인 |
 | `backend/main.py`, `frontend/index.html` | API·화면 |
 | `notebooks/04*` | CLIP 실험·검색 목록 / `05` 보정(한솔) / `05-2` 공정 비교 / `06` 코랩 앱 전체 실행 |
-| 드라이브 `찍먹_실험기록/best/convnext_base/best.pt` | 앱 분류 모델 → 로컬 `modeling/weights/best.pt` |
+| 드라이브 `찍먹_실험기록/best/convnext_base_exp004/best.pt` | 앱 분류 모델 (exp004) → 로컬 `modeling/weights/best.pt`. 예전 exp003은 `best/convnext_base/` |
+| `docs/발표_구성안.md` | 기말 발표 슬라이드 구성 (쉬운 말 버전) + 발표 전 채울 숫자 |
 | 드라이브 `찍먹_실험기록/best/clip_base/` | 검색 목록 두 파일 → 로컬 `knowledge/index/` |

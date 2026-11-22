@@ -31,7 +31,7 @@ app = FastAPI(title='찍먹')
 def model():
     """첫 요청 때 한 번만 불러옴 (서버 켜는 속도 유지)."""
     if not WEIGHTS.exists():
-        raise HTTPException(503, f'모델 가중치 없음: 드라이브 찍먹_실험기록/best/convnext_base/best.pt (한솔 최고 모델) → {WEIGHTS}')
+        raise HTTPException(503, f'모델 가중치 없음: 드라이브 찍먹_실험기록/best/convnext_base_exp004/best.pt (한솔 최종 모델) → {WEIGHTS}')
     return load_model()
 
 

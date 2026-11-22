@@ -2,7 +2,7 @@
 
 modeling/weights/best.pt(git 제외)와 modeling/classes.txt(Food-101 meta 순서)를 쓴다. 두 종류를 모두 읽는다:
 - timm 체크포인트 {'model','epoch','val_top1','cfg'} — 주한솔 hansol_train_convnext.ipynb
-  (`convnext_base.fb_in22k_ft_in1k`, EMA 가중치). Food-101 test top-1 93.4%  ← 지금 앱 기본
+  (`convnext_base.fb_in22k_ft_in1k`, EMA 가중치). 앱 기본 = exp004 (12에폭 최고, test top-1 93.46%)
 - torchvision state_dict — 처음 학습한 ConvNeXt-Tiny. test top-1 88.8%
 모델 크기(tiny/small/base/large)는 가중치 모양으로 알아낸다 (김유라).
 전처리는 학습 때와 같게: timm은 bicubic, torchvision은 bilinear (짧은 변 256 → 가운데 224, 크기는 cfg를 따름).
