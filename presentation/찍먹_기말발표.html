@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>찍먹 기말 발표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* 디자인 기준: Canva '검정 흰색 심플한 콘텐츠 발표' 템플릿 (따뜻한 회색 테두리 + 흰 카드 + 상단 제목 띠) */
+:root{
+  --frame:#e4e2dc; --card:#fff; --band:#f3f1ec; --tile:#f4f3f0; --line:#d9d6cf;
+  --ink:#1c1c1c; --sub:#5f5f5f; --mute:#9a9a9a;
+  --red:#c62828; --amber:#b7791f; --ok:#2e7d32;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#cfccc5;font-family:'Noto Sans KR',sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.deck{display:flex;flex-direction:column;align-items:center;gap:32px;padding:32px 0}
+.fit{width:calc(1920px * var(--s,1));height:calc(1080px * var(--s,1))}
+.slide{width:1920px;height:1080px;background:var(--frame);padding:44px;transform:scale(var(--s,1));transform-origin:top left;position:relative;overflow:hidden}
+.card{background:var(--card);width:100%;height:100%;display:flex;flex-direction:column;position:relative}
+.hd{background:var(--band);border-bottom:1px solid var(--line);text-align:center;padding:34px 80px 26px}
+.hd h1{font-size:52px;font-weight:700;letter-spacing:-1px;line-height:1.2}
+.hd .en{font-size:15px;letter-spacing:3px;text-transform:uppercase;color:var(--mute);margin-top:10px}
+.bd{flex:1;padding:44px 90px 70px;display:flex;flex-direction:column;justify-content:center;gap:28px;min-height:0}
+.ft{position:absolute;left:90px;bottom:26px;font-size:15px;color:var(--mute)}
+.pg{position:absolute;right:40px;bottom:22px;font-size:18px;color:var(--mute);font-weight:500}
+.c2{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.c55{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.c3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.c4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.tile{background:var(--tile);padding:34px 34px;border-radius:2px}
+.tile h3{font-size:30px;font-weight:700;margin-bottom:12px}
+.tile p{font-size:23px;line-height:1.55;color:var(--sub)}
+.big{font-size:120px;font-weight:900;letter-spacing:-4px;line-height:1}
+.mid{font-size:64px;font-weight:900;letter-spacing:-2px;line-height:1.05}
+.lead{font-size:34px;line-height:1.5;font-weight:500}
+.say{font-size:27px;line-height:1.6;color:var(--sub)}
+.red{color:var(--red)} .amber{color:var(--amber)} .ok{color:var(--ok)} .mute{color:var(--mute)}
+.tag{display:inline-block;background:var(--ink);color:#fff;font-size:20px;font-weight:700;padding:6px 16px;margin-bottom:14px}
+.lk a{color:var(--ink);text-decoration:underline;text-underline-offset:4px;word-break:break-all}
+.lk code{font-family:'JetBrains Mono',monospace;font-size:.9em}
+.tag.r{background:var(--red)} .tag.a{background:var(--amber)} .tag.g{background:#777}
+img{display:block;max-width:100%}
+.ph{object-fit:cover;width:100%;border-radius:2px}
+.cap{font-size:17px;color:var(--mute);margin-top:8px}
+.logo{height:46px;width:auto;object-fit:contain}
+.logos{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+table{border-collapse:collapse;width:100%;font-size:26px}
+th{background:var(--ink);color:#fff;font-weight:700;padding:14px 20px;text-align:left}
+td{padding:14px 20px;border-bottom:1px solid var(--line)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.hl td{background:#fbeceb;font-weight:700}
+/* 코드 */
+pre{background:#f6f5f1;border-left:6px solid var(--ink);padding:28px 34px;font-family:'JetBrains Mono',monospace;font-size:24px;line-height:1.6;white-space:pre;overflow:hidden;color:#222}
+pre .c{color:#8a8a8a} pre .k{font-weight:700;color:#000} pre .s{color:#2f6f3e} pre .num{color:var(--red);font-weight:700}
+.file{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--mute);margin-bottom:-18px}
+/* 막대 */
+.bars{display:flex;flex-direction:column;gap:22px}
+.bar{display:grid;grid-template-columns:260px 1fr 120px;align-items:center;gap:20px;font-size:26px}
+.track{height:40px;background:var(--tile)}
+.fill{height:100%;background:var(--ink)}
+.v{font-weight:900;text-align:right;font-size:30px}
+/* 흐름 */
+.flow{display:flex;align-items:center;justify-content:center;gap:22px}
+.node{background:var(--tile);padding:22px 26px;text-align:center;min-width:220px}
+.node b{display:block;font-size:26px;margin-top:10px}
+.node span{font-size:19px;color:var(--sub)}
+.arr{font-size:44px;color:var(--mute)}
+.blank{border:3px dashed var(--line);display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--mute);font-size:26px;text-align:center;background:#fafaf8}
+/* 표지 */
+.cover .card{justify-content:center;align-items:center;text-align:center}
+.cover .hero{width:820px;margin-bottom:-20px}
+.cover .title{background:var(--ink);color:#fff;font-size:110px;font-weight:900;padding:8px 46px;letter-spacing:-3px}
+.cover .title small{font-size:44px;font-weight:500;margin-left:16px}
+.cover .subt{font-size:36px;margin-top:26px;font-weight:500}
+.cover .team{font-size:22px;color:var(--sub);margin-top:30px;letter-spacing:1px}
+.div .card{justify-content:center;align-items:center}
+.div .title{background:var(--ink);color:#fff;font-size:80px;font-weight:900;padding:10px 46px}
+/* 방법론 표 */
+.pr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;border-top:1px solid var(--line);padding-top:18px;font-size:22px}
+.pr b{display:inline-block;background:var(--ink);color:#fff;font-size:16px;padding:3px 10px;margin-right:10px;vertical-align:2px}
+/* 과정 타임라인 */
+.proc{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.proc .pc{background:var(--tile);padding:20px 24px;display:grid;grid-template-columns:56px 1fr;gap:4px 14px;align-items:start}
+.proc .pc .no{grid-row:span 3;font-size:44px;font-weight:900;line-height:1}
+.proc .pc h3{font-size:24px;font-weight:700}
+.proc .pc p{font-size:19px;line-height:1.5;color:var(--sub)}
+.proc .pc .why{font-size:17px;color:var(--red);font-weight:700}
+.proc .pc .who{font-size:15px;color:var(--mute)}
+/* 폰 화면 시안: frontend/index.html 디자인을 그대로 옮김 (실제 캡처 아님) */
+.phones{display:flex;justify-content:center;align-items:flex-start;gap:26px}
+.pstep{display:flex;flex-direction:column;align-items:center;gap:14px;width:330px}
+.pstep .lab{font-size:24px;font-weight:700;text-align:center;line-height:1.35}
+.pstep .lab small{display:block;font-size:18px;font-weight:400;color:var(--sub)}
+.phone{width:330px;height:640px;border:10px solid #2d2d2d;border-radius:34px;background:#fdfdfb;overflow:hidden;position:relative;font-size:15px;line-height:1.55;color:#161616;word-break:keep-all;box-shadow:0 16px 30px rgba(60,55,45,.18)}
+.phone .pbar{display:flex;justify-content:space-between;align-items:baseline;padding:22px 18px 10px;border-bottom:1px solid #161616}
+.phone .pbar b{font-weight:900;font-size:16px} .phone .pbar i{font-size:12px;color:#5f5f5b}
+.phone .st{padding:16px 16px;border-bottom:1px solid #161616}
+.phone h5{font-size:16px;font-weight:700;margin-bottom:2px}
+.phone .hp{font-size:12px;color:#5f5f5b;margin-bottom:10px}
+.phone .chips{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.phone .chips span{border:1px solid #161616;text-align:center;font-size:13px;padding:7px 0}
+.phone .chips span.on{background:#161616;color:#fdfdfb;font-weight:700}
+.phone .go{margin:14px 16px;background:#161616;color:#fdfdfb;text-align:center;font-weight:700;padding:13px}
+.phone .shot{aspect-ratio:4/3;border:1px dashed #161616;position:relative;overflow:hidden}
+.phone .shot img{width:100%;height:100%;object-fit:cover}
+.phone .shot em{position:absolute;right:6px;bottom:6px;background:#fdfdfb;border:1px solid #161616;font-size:11px;font-style:normal;padding:2px 6px}
+.phone .res{border-top:3px double #161616;padding:16px}
+.phone .rh{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:12px}
+.phone .rh p{font-size:12px;color:#5f5f5b}
+.phone .rh h6{font-size:22px;font-weight:900;letter-spacing:-.5px;line-height:1.2}
+.phone .rh .rt{font-size:11.5px;color:#5f5f5b;margin-top:3px;line-height:1.4}
+.phone .stp{width:70px;height:70px;border:2px solid currentColor;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:900;font-size:14px;line-height:1.1;transform:rotate(-8deg);box-shadow:inset 0 0 0 3px #fdfdfb,inset 0 0 0 4px currentColor;color:var(--red)}
+.phone .rw{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #d9d9d4;font-size:15px}
+.phone .rws{border-top:1px solid #161616}
+.phone .lv{font-size:12px;font-weight:700;padding:2px 8px;border:1.5px solid currentColor;white-space:nowrap}
+.phone .lv.r{color:#fff;background:var(--red);border-color:var(--red)} .phone .lv.a{color:var(--amber)}
+.phone .nut{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #161616;margin-top:12px}
+.phone .nut div{padding:8px 4px;text-align:center;font-size:11px;color:#5f5f5b}
+.phone .nut div+div{border-left:1px solid #161616}
+.phone .nut strong{display:block;font-size:16px;color:#161616}
+.phone .nut .hi{display:inline-block;margin-top:3px;padding:0 6px;font-size:11px;font-weight:700;background:#161616;color:#fdfdfb}
+.phone .fx{font-size:12px;color:#5f5f5b;margin-top:10px;line-height:1.6}
+.phone .fx b{color:#161616;font-weight:500}
+.phone .ev h6{font-size:13px;font-weight:700;padding-bottom:5px;border-bottom:1px solid #161616;margin-top:4px}
+.phone .ev .rw{align-items:flex-start;font-size:13px}
+.phone .ev .v{text-align:right;font-weight:700;font-size:13px}
+.phone .ev .v small{display:block;font-weight:400;font-size:11px;color:#5f5f5b}
+.phone .chk{display:inline-block;margin-left:4px;padding:0 5px;font-size:10.5px;border:1.5px solid #5f5f5b;color:#5f5f5b}
+.phone .why{border:1px solid #161616;margin-top:12px;font-size:13px}
+.phone .why b{display:flex;justify-content:space-between;padding:8px 10px}
+.phone .why p{padding:0 10px 10px;line-height:1.6}
+.phone .ld{display:grid;gap:8px;padding:16px}
+.phone .ld i{display:block;height:15px;background:#d9d9d4}
+.callout{background:var(--ink);color:#fff;font-size:20px;font-weight:700;padding:8px 14px;position:absolute;white-space:nowrap}
+.callout.r{background:var(--red)}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  body{background:none}
+  .deck{padding:0;gap:0}
+  .fit{width:1920px;height:1080px}
+  .slide{transform:none;page-break-after:always;break-after:page}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 1 표지 -->
+<section class="slide cover"><div class="card">
+  <img class="hero" src="img/hero.png" alt="찍먹 표지 그림">
+  <div class="title">찍먹<small>(찍고 먹자)</small></div>
+  <div class="subt">사진 한 장으로 확인하는 음식 속 숨은 알레르기</div>
+  <div class="team"><b>딥러닝 5조</b> &nbsp; 김유라 · 박중현 · 서준영 · 주한솔</div>
+</div></section>
+
+<!-- 2 문제 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>문제 정의 — 보이지 않는 알레르기</h1><div class="en">Problem definition</div></div>
+  <div class="bd c2">
+    <div style="position:relative">
+      <img class="ph" style="height:560px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Shoyu_Ramen%EF%BC%88Tokyo_Ramen%EF%BC%89_-_01.jpg?width=1000" alt="라멘">
+      <div style="position:absolute;left:24px;top:24px" class="tag r">간장 속 밀?</div>
+      <div style="position:absolute;right:24px;bottom:24px" class="tag a">육수 속 새우?</div>
+      <div class="cap">사진: Wikimedia Commons</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:30px">
+      <img src="img/problem.jpg" style="width:520px" alt="중간 발표 문제 정의 사진">
+      <p class="lead">메뉴판은 못 읽고, 이름도 모르고,<br><b>재료는 사진에 보이지 않는다.</b></p>
+      <p class="say">찍먹은 한국인을 위해 <b>법정 알레르기 19가지 + 나트륨</b>을<br>사진 한 장으로 알려 준다.</p>
+    </div>
+  </div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 2-1 사용 흐름 (폰 화면 시안) -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>서비스 사용 흐름</h1><div class="en">How you use it</div></div>
+  <div class="bd" style="padding-top:30px;padding-bottom:60px">
+    <div class="phones">
+      <div class="pstep">
+        <div class="phone">
+          <div class="pbar"><b>찍먹</b><i>Snap first, eat later</i></div>
+          <div class="st"><h5>① 내 알레르기</h5><p class="hp">고른 항목은 다음에도 기억해 둘게요.</p>
+            <div class="chips"><span>알류</span><span>우유</span><span>메밀</span><span class="on">땅콩</span><span>대두</span><span class="on">밀</span><span>고등어</span><span>게</span><span class="on">새우</span><span>돼지고기</span><span>복숭아</span><span>토마토</span><span>아황산류</span><span>호두</span><span>닭고기</span><span>쇠고기</span><span>오징어</span><span>조개류</span><span>잣</span></div>
+            <p class="hp" style="margin:10px 0 0">3개 선택됨: 땅콩, 밀, 새우</p></div>
+          <div class="st" style="border:0"><h5>② 음식 사진</h5><div class="shot" style="display:grid;place-items:center;text-align:center;font-size:13px;color:#5f5f5b"><span><b style="color:#161616;font-size:14px">눌러서 찍거나 고르기</b><br>JPG, PNG · 10MB까지</span></div></div>
+        </div>
+        <div class="lab">① 내 알레르기 고르기<small>법정 19가지 · 한 번만 고르면 기억</small></div>
+      </div>
+      <div class="arr" style="margin-top:290px">→</div>
+      <div class="pstep">
+        <div class="phone">
+          <div class="pbar"><b>찍먹</b><i>Snap first, eat later</i></div>
+          <div class="st"><h5>② 음식 사진</h5><p class="hp">음식이 화면 가운데 크게 나오게 찍어 주세요.</p>
+            <div class="shot"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Phat_Thai_kung_Chang_Khien_street_stall.jpg?width=500" alt="팟타이 사진"><em>다시 고르기</em></div></div>
+          <div class="go">확인하는 중…</div>
+          <div class="ld"><i style="width:55%;height:24px"></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="lab">② 음식 찍기<small>메뉴판·이름 몰라도 OK</small></div>
+      </div>
+      <div class="arr" style="margin-top:290px">→</div>
+      <div class="pstep">
+        <div class="phone">
+          <div class="res" style="border-top:0;padding-top:24px">
+            <div class="rh"><div><p>이 음식은</p><h6>Pad Thai</h6><p class="rt">사진 AI가 확실하게 알아본 음식이에요</p></div><div class="stp">주의</div></div>
+            <div class="rws">
+              <div class="rw"><span>땅콩</span><span class="lv r">주의</span></div>
+              <div class="rw"><span>밀</span><span class="lv a">확인 필요</span></div>
+              <div class="rw"><span>새우</span><span class="lv a">확인 필요</span></div>
+            </div>
+            <div class="nut"><div><strong>700</strong>칼로리 kcal</div><div><strong>2,513</strong>나트륨 mg<br><span class="hi">높음</span></div><div><strong>21</strong>단백질 g</div></div>
+            <p class="fx" style="font-size:11px">1인분 기준 (레시피 중앙값)</p>
+            <p class="fx">그 밖에 자주 들어가는 재료 <b>알류</b><br>근거 <b>레시피 통계</b> · 레시피 <b>328개</b></p>
+          </div>
+        </div>
+        <div class="lab">③ 결과 바로 확인<small>내 알레르기만 3단계로 + 나트륨</small></div>
+      </div>
+      <div class="arr" style="margin-top:290px">→</div>
+      <div class="pstep">
+        <div class="phone">
+          <div class="res" style="border-top:0;padding-top:24px">
+            <div class="ev"><h6>어떻게 판단했나요</h6>
+              <div class="rw"><span>사진 AI</span><span class="v">Pad Thai 98%<small>이 음식의 레시피 통계로 판정</small></span></div>
+            </div>
+            <div class="why"><b>왜 이런 결과인가요? <span>−</span></b><p>팟타이 레시피 328개 중 84%에 땅콩이 들어가요. 소스에 쓰는 간장·국수에서 밀(54%), 건새우·새우(43%)도 자주 나와요. 알레르기가 심하면 가게에 꼭 확인하세요.</p></div>
+            <p class="fx" style="margin-top:16px">레시피 통계로 추정한 결과예요.<br>알레르기가 심하면 꼭 가게에 확인하세요.</p>
+          </div>
+        </div>
+        <div class="lab">④ 근거까지 보여 줌<small>어떤 AI가 무엇을 봤는지 · 쉬운 설명</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="ft">화면 시안: 실제 앱 디자인(frontend)과 팟타이 레시피 표의 실제 값으로 만든 예시 · 설명 문장은 예시</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 3 중간 이후 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>중간 발표 이후 변경점</h1><div class="en">Since the midterm</div></div>
+  <div class="bd c55">
+    <table>
+      <tr><th style="width:22%"></th><th>중간 발표</th><th>기말</th></tr>
+      <tr><td><b>범위</b></td><td>영양·당류·개인 식단까지</td><td><b>알레르기 19 + 나트륨</b>에 집중</td></tr>
+      <tr><td><b>모델</b></td><td>후보 4개 (ResNet · EfficientNet · ViT · ConvNeXt)</td><td><b>ConvNeXt-Base</b> 확정 + <b>CLIP</b> 추가</td></tr>
+      <tr><td><b>판정</b></td><td>규칙으로 판정, LLM 판단 없음</td><td><b>그대로 지킴</b> (근거가 남는 판정)</td></tr>
+      <tr><td><b>새로 한 것</b></td><td>—</td><td>처음 보는 음식 · 평가 정답지 · 웹 앱</td></tr>
+    </table>
+    <div><img src="img/flow_mid.jpg" alt="중간 발표 서비스 시나리오"><div class="cap">중간 발표 서비스 시나리오</div></div>
+  </div>
+  <div class="ft">중간 발표 코멘트를 받으면 이 장에 반영</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 4 데이터 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>데이터 및 전처리</h1><div class="en">Data review (midterm)</div></div>
+  <div class="bd">
+    <div class="c2" style="align-items:start">
+      <div style="display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:center">
+        <img src="img/food101.jpg" alt="Food-101 사진 예시">
+        <div><div class="tag">사진 · Food-101</div><div class="mid">101종 × 1,000장</div><p class="say">음식 <b>이름</b>을 배우는 데 사용<br><span class="mute" style="font-size:20px">Bossard et al., ECCV 2014 · ETH Zürich</span></p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:center">
+        <img src="img/recipe_ds.jpg" alt="레시피 데이터셋 화면">
+        <div><div class="tag">레시피 · Recipe1M+ 파생</div><div class="mid">102만 개</div><p class="say">사진에 안 보이는 <b>재료</b>를 알려 줌<br><span class="mute" style="font-size:20px"><img class="logo" style="height:22px;display:inline;vertical-align:middle" src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/kaggle.svg" alt="Kaggle"> Kaggle (shlokpatel0812)</span></p></div>
+      </div>
+    </div>
+    <table style="font-size:23px">
+      <tr><th>EDA에서 찾은 문제</th><th>정리</th><th class="n">결과</th></tr>
+      <tr><td>음식이 아닌 흑백 사진 (배트맨·깨진 유리)</td><td>삭제</td><td class="n">101,000 → 100,997장</td></tr>
+      <tr><td>계산 못 한 영양값 · 나트륨 이상값</td><td>신뢰도 낮은 값 제외 · 9,500mg 이상 제외</td><td class="n">1,023,489 → 1,011,483개</td></tr>
+      <tr><td>이름만 같은 다른 요리 ("Ramen Salad")</td><td>규칙으로 제외</td><td class="n">131,865 → 117,224개</td></tr>
+      <tr><td>요약 재료(NER)가 알레르기 재료를 1~9% 놓침</td><td>재료 원문으로 판별</td><td class="n">ingredients 사용</td></tr>
+    </table>
+  </div>
+  <div class="ft">자세한 EDA는 부록 A</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 5 전체 흐름 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>전체 구조</h1><div class="en">How it works</div></div>
+  <div class="bd" style="gap:56px">
+    <div class="flow">
+      <div class="node"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Phat_Thai_kung_Chang_Khien_street_stall.jpg?width=400" style="width:200px;height:140px;object-fit:cover" alt="음식 사진"><b>음식 사진</b></div>
+      <div class="arr">→</div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="node" style="display:flex;gap:18px;align-items:center;text-align:left"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Meta_Platforms_Inc._logo.svg?width=300" class="logo" style="height:34px" alt="Meta"><div><b style="margin:0">메뉴 101개를 외운 AI</b><span>ConvNeXt · Food-101로 추가 학습</span></div></div>
+        <div class="node" style="display:flex;gap:18px;align-items:center;text-align:left"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/OpenAI_Logo.svg?width=300" class="logo" style="height:34px" alt="OpenAI"><div><b style="margin:0">레시피를 찾는 AI</b><span>CLIP · 레시피 글 3.5만 개에서 검색</span></div></div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node" style="background:var(--ink);color:#fff"><b style="font-size:30px">법정 알레르기<br>19가지 체크리스트</b><span style="color:#ccc">레시피 중 몇 %에 들어가나</span></div>
+      <div class="arr">→</div>
+      <div class="node" style="text-align:left;font-size:26px;line-height:1.9"><b class="red" style="margin:0">● 주의</b><b class="amber" style="margin:0">● 확인 필요</b><b class="mute" style="margin:0">● 해당 없음</b></div>
+    </div>
+    <div class="pr">
+      <div><b>원칙 1</b> 판정은 체크리스트만 <span class="mute">(Gemini는 이름 추측·설명만)</span></div>
+      <div><b>원칙 2</b> 애매하면 더 위험한 쪽</div>
+      <div><b>원칙 3</b> 근거가 적으면 "정보 부족"</div>
+    </div>
+  </div>
+  <div class="ft">판정 기준: 비슷한 레시피 중 60%↑ 주의 · 20%↑ 확인 필요 · 레시피 30개 미만이면 정보 부족</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 6-1 과정 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>개발 과정</h1><div class="en">What we did, and why</div></div>
+  <div class="bd" style="padding-top:30px">
+    <div class="proc">
+      <div class="pc"><div class="no">1</div><h3>데이터 정리</h3><p>사진 오류 3장 삭제 · 레시피 이상값·엉뚱한 요리 제외</p><div class="why">틀린 데이터로 배우지 않게</div></div>
+      <div class="pc"><div class="no">2</div><h3>알레르기 비율표</h3><p>재료 단어 규칙 19가지 → 175종 × 19 비율</p><div class="why">"있다/없다" 대신 근거 있는 %</div></div>
+      <div class="pc"><div class="no">3</div><h3>메뉴 AI 학습</h3><p>작은 판 → 큰 판, 실험 4번 → 93.5%</p><div class="why">아는 음식은 빠르고 정확하게</div></div>
+      <div class="pc"><div class="no">4</div><h3>확신도 맞추기</h3><p>"90% 확신"이 실제로 90% 맞도록 보정 → 기준 95% · 60%</p><div class="why">언제 믿고 언제 의심할지</div></div>
+      <div class="pc"><div class="no">5</div><h3>레시피 AI 연결</h3><p>검색 목록 3.5만 개 · 추가 학습 3번 → 원래 CLIP 사용</p><div class="why">메뉴판 밖 음식도 다루게</div></div>
+      <div class="pc"><div class="no">6</div><h3>두 AI 합치기</h3><p>애매하거나 둘이 다르면 위험한 쪽으로 합침</p><div class="why">사진 착각으로 놓치지 않게</div></div>
+      <div class="pc"><div class="no">7</div><h3>정답지 · 평가</h3><p>다른 레시피 사이트 84개 → 28종 × 19 정답</p><div class="why">우리 데이터가 아닌 바깥 기준으로 채점</div></div>
+      <div class="pc"><div class="no">8</div><h3>오류 분석 → 규칙 수정</h3><p>필로 반죽·레이디핑거 등 추가 → 놓침 617 → 81</p><div class="why">틀린 데서 원인을 찾아 고침</div></div>
+      <div class="pc"><div class="no">9</div><h3>웹 앱</h3><p>서버(FastAPI) + 폰 화면 · Gemini 쉬운 설명</p><div class="why">실제로 써 볼 수 있게</div></div>
+    </div>
+  </div>
+  <div class="ft">1은 중간 발표, 2~9는 중간 이후 · 각 단계의 자세한 내용은 뒤 슬라이드와 부록</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 7 ConvNeXt -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>분류 모델 선정 — ConvNeXt</h1><div class="en">Model choice ① image classifier</div></div>
+  <div class="bd" style="gap:34px">
+    <div class="c4">
+      <div class="tile" style="padding:18px"><img src="img/resnet.jpg" style="height:130px;width:100%;object-fit:contain" alt="ResNet 구조"><p style="margin-top:10px"><b>ResNet</b> · <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/microsoft.svg" style="height:20px;display:inline;vertical-align:middle" alt="Microsoft"> 2016</p></div>
+      <div class="tile" style="padding:18px"><img src="img/effnet.jpg" style="height:130px;width:100%;object-fit:contain" alt="EfficientNetV2 구조"><p style="margin-top:10px"><b>EfficientNetV2</b> · <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/google.svg" style="height:20px;display:inline;vertical-align:middle" alt="Google"> 2021</p></div>
+      <div class="tile" style="padding:18px"><img src="img/vit.jpg" style="height:130px;width:100%;object-fit:contain" alt="ViT 구조"><p style="margin-top:10px"><b>ViT</b> · <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/google.svg" style="height:20px;display:inline;vertical-align:middle" alt="Google"> 2021</p></div>
+      <div class="tile" style="padding:18px;outline:4px solid var(--ink)"><img src="img/convnext.jpg" style="height:130px;width:100%;object-fit:contain" alt="ConvNeXt 구조"><p style="margin-top:10px"><b>ConvNeXt</b> · <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/meta.svg" style="height:20px;display:inline;vertical-align:middle" alt="Meta"> 2022</p></div>
+    </div>
+    <div class="c55" style="align-items:center">
+      <div class="bars">
+        <div class="bar"><span>ConvNeXt-Tiny</span><div class="track"><div class="fill" style="width:43%;background:#aaa"></div></div><span class="v mute">89.2%</span></div>
+        <div class="bar"><span>EfficientNetV2-M</span><div class="track"><div class="fill" style="width:62%;background:#aaa"></div></div><span class="v mute">91.6%</span></div>
+        <div class="bar"><span><b>ConvNeXt-Base</b></span><div class="track"><div class="fill" style="width:80%"></div></div><span class="v">93.5%</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center">
+          <img src="img/gyoza.jpg" alt="교자와 만두">
+          <p class="say" style="font-size:23px">비슷한 음식(교자 vs 만두)을 가르려면 <b>세밀한 무늬</b>를 잘 봐야 한다 → 같은 시험지에서 가장 높았던 ConvNeXt</p>
+        </div>
+        <div class="flow" style="justify-content:flex-start;gap:12px">
+          <div class="node" style="min-width:0;padding:12px 16px;text-align:left"><span>Meta가 미리 학습</span><b style="margin:2px 0 0;font-size:21px">ImageNet 1,400만 장</b></div>
+          <div class="arr" style="font-size:30px">→</div>
+          <div class="node" style="min-width:0;padding:12px 16px;text-align:left;background:#fbf7ec"><span>우리가 추가 학습</span><b style="margin:2px 0 0;font-size:21px">Food-101 101종</b></div>
+        </div>
+        <div><div class="file" style="margin-bottom:6px">찍먹_딥러닝_코드정리.ipynb (2장, 발췌)</div>
+<pre style="font-size:19px;padding:20px 24px">model = timm.<span class="k">create_model</span>(<span class="s">'convnext_base.fb_in22k_ft_in1k'</span>,
+                          num_classes=<span class="num">101</span>)  <span class="c"># 1,000종 → 음식 101종</span>
+model.<span class="k">load_state_dict</span>(best)  <span class="c"># 모든 층을 Food-101로 다시 학습한 가중치</span></pre></div>
+      </div>
+    </div>
+  </div>
+  <div class="ft">Food-101 시험 사진 25,250장 정확도 · 같은 가중치로 다시 돌려도 93.47% · 학습: 학습률 2배 검증 +0.51%p (가장 큰 개선), 12에폭 최고 → 16에폭 조기 종료 (부록 B) · Liu et al., CVPR 2022</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 8 메뉴 AI의 한계 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>분류 모델의 한계 — 학습 범위 밖 음식</h1><div class="en">When the dish is new to the model</div></div>
+  <div class="bd" style="display:grid;grid-template-columns:1fr 330px 1fr;gap:50px;align-items:center;padding-top:30px;padding-bottom:60px">
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <img class="ph" style="height:240px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Dried_soba_noodles_by_FotoosVanRobin.jpg?width=700" alt="소바">
+      <p class="lead">소바(메밀국수)는<br>메뉴 101개에 <b>없다</b>.</p>
+      <div class="tile" style="padding:22px 26px"><p style="font-size:24px">메뉴 AI만 있었다면<br>"<b>라멘 97%</b>" → 라멘으로 판정<br>→ <b class="red">메밀을 놓친다</b></p></div>
+    </div>
+    <div class="phone">
+      <div class="res" style="border-top:0;padding-top:24px">
+        <div class="rh"><div><p>이 음식은</p><h6>Ramen 또는 Soba</h6><p class="rt">사진 AI 후보와 비슷한 레시피 검색을 함께 보고 위험한 쪽으로 판정했어요</p></div><div class="stp">주의</div></div>
+        <div class="rws">
+          <div class="rw"><span>메밀</span><span class="lv r">주의</span></div>
+          <div class="rw"><span>밀</span><span class="lv r">주의</span></div>
+        </div>
+        <div class="ev" style="margin-top:14px"><h6>어떻게 판단했나요</h6>
+          <div class="rw"><span>사진 AI</span><span class="v">Ramen 97%<small>후보: Ramen, Pho</small></span></div>
+          <div class="rw"><span>비슷한 레시피</span><span class="v">Soba · Ramen · Pho<small>CLIP 사진 검색 상위 3개</small></span></div>
+          <div class="rw"><span>AI 이름 추정</span><span class="v">Soba 90%<span class="chk">검색과 일치</span><small>검색 결과를 그대로 사용</small></span></div>
+        </div>
+        <p class="fx">후보 음식이 여러 개라 칼로리·나트륨은 보여 드리지 않아요.</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div class="tag" style="align-self:flex-start">찍먹은</div>
+      <p class="say"><b>① 메뉴 외운 AI</b> "라멘 97%"</p>
+      <p class="say"><b>② 레시피 찾는 AI</b> "소바 레시피가 대부분"</p>
+      <p class="say">→ 둘이 다르면 <b>위험한 쪽으로 합쳐</b><br>&nbsp;&nbsp;&nbsp;<b class="red">메밀 주의</b></p>
+      <p class="say mute" style="font-size:22px">두 번째 AI가 어떻게 레시피를 찾는지 → 다음 장</p>
+    </div>
+  </div>
+  <div class="ft">화면 시안: 실제 앱 디자인과 판정 규칙대로 만든 예시 (judge.py 자체 검사의 소바 사례) · 레시피 표 값: 소바 메밀 92%, 라멘 밀 83%</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 9 CLIP -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>검색 모델 선정 — CLIP</h1><div class="en">Model choice ② image–text search</div></div>
+  <div class="bd" style="gap:30px">
+    <div class="c2" style="align-items:center">
+      <div>
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Contrastive_Language-Image_Pretraining.png?width=1000" style="max-height:330px;margin:0 auto" alt="CLIP 학습 구조 그림">
+        <div class="cap" style="text-align:center">OpenAI가 인터넷 사진–설명 글 4억 쌍으로 미리 학습한 방식 (Radford et al., 2021 · 그림 Wikimedia Commons)</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="logos"><img class="logo" src="https://commons.wikimedia.org/wiki/Special:FilePath/OpenAI_Logo.svg?width=300" alt="OpenAI"><img class="logo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hf-logo-with-title.svg?width=300" alt="Hugging Face"></div>
+        <p class="lead">사진과 글을 <b>같은 자리</b>에 놓도록 배운 AI</p>
+        <div class="flow" style="justify-content:flex-start;gap:12px">
+          <div class="node" style="min-width:0;padding:12px 16px;text-align:left"><span>OpenAI가 미리 학습</span><b style="margin:2px 0 0;font-size:21px">사진–글 4억 쌍</b></div>
+          <div class="arr" style="font-size:30px">→</div>
+          <div class="node" style="min-width:0;padding:12px 16px;text-align:left;background:#fbf7ec"><span>우리가 만든 검색 목록</span><b style="margin:2px 0 0;font-size:21px">레시피 글 3.5만 개</b></div>
+        </div>
+        <p class="say" style="font-size:23px">학습은 그대로 두고, 우리 레시피 중 <b>가장 비슷한 30개</b>를 찾는 데만 쓴다</p>
+      </div>
+    </div>
+    <div class="c55" style="align-items:center">
+      <div class="flow" style="justify-content:flex-start;gap:16px">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Dried_soba_noodles_by_FotoosVanRobin.jpg?width=300" style="width:150px;height:110px;object-fit:cover" alt="소바 사진">
+        <div class="arr">→</div>
+        <div class="node" style="text-align:left;min-width:0;font-size:20px;line-height:1.6;padding:14px 20px">Cold Soba with Dipping Sauce<br>Buckwheat Noodle Salad<br>Zaru Soba …<span style="display:block;color:var(--mute)">비슷한 레시피 30개</span></div>
+        <div class="arr">→</div>
+        <div class="node" style="min-width:0;padding:14px 20px"><b class="red" style="margin:0;font-size:34px">메밀 80%</b><span>30개 중 24개</span></div>
+      </div>
+      <div><div class="file" style="margin-bottom:6px">찍먹_딥러닝_코드정리.ipynb (3장, 발췌)</div>
+<pre style="font-size:20px;padding:20px 26px"><span class="k">def</span> search_recipes(image, k=<span class="num">30</span>):
+    sim = image_embedding(image) @ text_vectors.T  <span class="c"># 사진 vs 레시피 글 3.5만 개</span>
+    scores, ids = sim.topk(k)                      <span class="c"># 가장 비슷한 30개</span>
+    <span class="k">return</span> index_meta.iloc[ids]                  <span class="c"># → 재료로 알레르기 비율</span></pre></div>
+    </div>
+  </div>
+  <div class="ft">openai/clip-vit-base-patch32 (추가 학습 없음) · 175종 × 최대 300개 = 35,184개 레시피(제목+재료) · 레시피 예시와 비율은 설명용 그림</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 10 CLIP 추가 공부 실패 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>CLIP 파인튜닝 결과</h1><div class="en">Fine-tuning CLIP: a negative result</div></div>
+  <div class="bd c55">
+    <table>
+      <tr><th>우리 레시피로 추가 공부</th><th class="n">원래 CLIP</th><th class="n">공부 후</th></tr>
+      <tr><td>1차 · 전체를 다시 공부</td><td class="n">8.5%</td><td class="n red">11.5%</td></tr>
+      <tr><td>2차 · 같은 음식은 같은 편 + 일부만</td><td class="n">9.0%</td><td class="n red">10.4%</td></tr>
+      <tr><td>3차 · 범위·속도 6가지 조합</td><td class="n">8.7%</td><td class="n red">10.9%</td></tr>
+    </table>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div class="tag r" style="align-self:flex-start">처음 보는 음식 주의놓침률</div>
+      <div class="big">8.7<span style="font-size:60px">%</span> <span class="mute" style="font-size:70px">→</span> <span class="red">10.9<span style="font-size:60px">%</span></span></div>
+      <p class="say">이름 맞히기는 조금 오르기도 했지만 <b>놓침은 매번 늘었다</b><br>= 문제집만 외워서 시험을 못 봄<br>→ <b>원래 CLIP을 그대로 쓴다.</b> 실패도 결과다.</p>
+    </div>
+  </div>
+  <div class="ft">1·2차 박중현, 3차 김유라 · 원래 CLIP 값은 실험마다 사진 표본이 달라 조금씩 다름 (부록 D)</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 11 코드 ① (노트북 1장) -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>코드 ① 데이터 분할</h1><div class="en">Data split · notebook §1</div></div>
+  <div class="bd c55">
+    <div><div class="file" style="margin-bottom:6px">찍먹_딥러닝_코드정리.ipynb (1장, 발췌)</div>
+<pre style="font-size:21px"><span class="k">EXCLUDE</span> = {<span class="s">'steak/1340977'</span>, <span class="s">'lasagna/3787908'</span>,
+           <span class="s">'bread_pudding/1375816'</span>}   <span class="c"># 라벨 오류 3장</span>
+train_ids = [s <span class="k">for</span> s <span class="k">in</span> train_txt <span class="k">if</span> s <span class="k">not in</span> EXCLUDE]
+
+rng = random.Random(<span class="num">42</span>)                 <span class="c"># 매번 같은 분할</span>
+<span class="k">for</span> ids <span class="k">in</span> by_class.values(): rng.shuffle(ids)
+val_ids = [s <span class="k">for</span> c <span class="k">in</span> CLASSES <span class="k">for</span> s <span class="k">in</span> by_class[c][:<span class="num">75</span>]]
+tr_ids  = [s <span class="k">for</span> c <span class="k">in</span> CLASSES <span class="k">for</span> s <span class="k">in</span> by_class[c][<span class="num">75</span>:]]
+<span class="c"># 음식당 75장 → 모의고사(검증), 나머지 → 학습</span>
+<span class="c"># 공식 test 25,250장 → 최종 평가에 한 번만</span></pre></div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div class="tag">요약</div>
+      <table style="font-size:24px">
+        <tr><th>구분</th><th class="n">장수</th><th>쓰임</th></tr>
+        <tr><td>학습</td><td class="n">68,172</td><td>공부</td></tr>
+        <tr><td>검증</td><td class="n">7,575</td><td>설정 고르기 (모의고사)</td></tr>
+        <tr class="hl"><td>시험</td><td class="n">25,250</td><td>마지막에 <b>한 번만</b></td></tr>
+      </table>
+      <p class="say">시험지로 설정을 고르면 점수가 부풀려진다<br>→ 같은 가중치로 다시 돌려도 <b>93.47%</b> (기록 93.46%)</p>
+    </div>
+  </div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 12 코드 ② (노트북 2·4장) -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>코드 ② 분류 예측 · 확신도별 분기</h1><div class="en">Top-3 prediction · notebook §2 · §4</div></div>
+  <div class="bd c55">
+    <div><div class="file" style="margin-bottom:6px">찍먹_딥러닝_코드정리.ipynb (2장, 발췌)</div>
+<pre style="font-size:21px">@torch.no_grad()
+<span class="k">def</span> predict(image, k=<span class="num">3</span>):
+    x = eval_tf(image.convert(<span class="s">'RGB'</span>)).unsqueeze(<span class="num">0</span>)
+    prob = model(x).softmax(dim=<span class="num">1</span>)[<span class="num">0</span>]   <span class="c"># 101종 확률</span>
+    p, idx = prob.topk(k)                 <span class="c"># 상위 3개</span>
+    <span class="k">return</span> [(CLASSES[i], v) <span class="k">for</span> i, v <span class="k">in</span> zip(idx, p)]
+
+<span class="c"># 앱에서 (4장): 보정한 1등 확률이</span>
+<span class="c">#   0.95 이상     → 1등 음식으로 판단</span>
+<span class="c">#   0.6 ~ 0.95    → 상위 3개를 함께 고려</span>
+<span class="c">#   0.6 미만      → CLIP 레시피 검색으로</span></pre></div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="tag">예시 — 확신도 애매</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div><img class="ph" style="height:170px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Bowl_of_Meatball_pho.jpg?width=500" alt="쌀국수"><p class="say" style="font-size:22px">쌀국수 <b>65%</b> · 밀 낮음</p></div>
+        <div><img class="ph" style="height:170px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Shoyu_Ramen%EF%BC%88Tokyo_Ramen%EF%BC%89_-_01.jpg?width=500" alt="라멘"><p class="say" style="font-size:22px">라멘 30% · <b>밀 높음</b></p></div>
+      </div>
+      <p class="say">95% 미만이라 후보 3개를 <b>함께 본다</b> → 더 위험한 쪽으로<br>→ 라멘의 <b class="red">밀까지 경고</b></p>
+    </div>
+  </div>
+  <div class="ft">보정: temperature scaling (T=0.838, exp003 기록 — 노트북 4장) · 부록 C</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 13 코드 ③ (노트북 3·4장) -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>코드 ③ CLIP 레시피 검색</h1><div class="en">CLIP search · notebook §3 · §4</div></div>
+  <div class="bd c55">
+    <div><div class="file" style="margin-bottom:6px">찍먹_딥러닝_코드정리.ipynb (3장, 발췌)</div>
+<pre style="font-size:20px">clip = CLIPModel.from_pretrained(
+    <span class="s">'openai/clip-vit-base-patch32'</span>)   <span class="c"># 추가 학습 없음</span>
+
+<span class="k">def</span> image_embedding(image):            <span class="c"># 사진 → 숫자 줄</span>
+    pooled = clip.vision_model(pixel_values=pixels).pooler_output
+    <span class="k">return</span> F.normalize(clip.visual_projection(pooled), dim=-<span class="num">1</span>)
+
+<span class="c"># 레시피 글 35,184개는 미리 숫자 줄로 (앱과 같은 파일)</span>
+text_vectors = np.load(<span class="s">'clip_base/index_emb.npy'</span>)
+<span class="k">assert</span> len(index_meta) == len(text_vectors)</pre></div>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;gap:16px;align-items:center">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Dried_soba_noodles_by_FotoosVanRobin.jpg?width=300" style="width:150px;height:110px;object-fit:cover" alt="소바">
+        <div style="font-size:24px;line-height:1.7">메뉴 AI <b>라멘 97%</b><br>CLIP <b>소바 레시피 다수</b><br>→ <b class="red">메밀 주의</b></div>
+      </div>
+      <div class="tag r" style="align-self:flex-start">처음 보는 음식 오판정률</div>
+      <div class="mid">21% <span class="mute">→</span> <span class="red">12%</span></div>
+      <p class="say" style="font-size:23px">확률만으로는 처음 보는 음식을 못 거른다 (AUROC 0.86~0.88)<br>→ CLIP 검색을 늘 함께 본다</p>
+    </div>
+  </div>
+  <div class="ft">04-4: 처음 보는 음식 300장 · 아는 음식 188장 · 부록 C</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 14 지표 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>평가 지표</h1><div class="en">Evaluation metrics</div></div>
+  <div class="bd c2">
+    <div class="tile" style="border-top:10px solid var(--red)"><div class="tag r">주 지표</div><div class="mid red">FNR <span style="font-size:34px">↓</span></div><p style="font-size:22px;color:var(--sub);margin-top:6px">False Negative Rate (= 1 − Recall) · 주의놓침률</p><p style="margin-top:16px;font-size:28px">정답 <b>주의</b> → <b>해당 없음</b>으로 판정한 비율<br><b>알레르기 앱에서 가장 치명적인 오류</b></p></div>
+    <div class="tile" style="border-top:10px solid #999"><div class="tag g">보조 지표</div><div class="mid mute">FPR <span style="font-size:34px">↓</span></div><p style="font-size:22px;color:var(--sub);margin-top:6px">False Positive Rate · 과경고율</p><p style="margin-top:16px;font-size:28px">정답 <b>해당 없음</b> → <b>주의·확인 필요</b>로 판정한 비율<br>높으면 경고를 믿지 않게 된다</p></div>
+  </div>
+  <div class="ft">정답지: 다른 레시피 사이트 84개를 사람이 확인해 28개 음식 × 19항목으로 만듦 (서준영)</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 15 결과 ① -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>결과 ① LLM 직접 판정 대비</h1><div class="en">Rules vs. asking an LLM directly</div></div>
+  <div class="bd c2">
+    <div style="display:flex;gap:60px;align-items:flex-end;justify-content:center">
+      <div style="text-align:center"><div class="big">2<span style="font-size:60px">%</span></div><p class="say"><b>찍먹 체크리스트</b></p></div>
+      <div style="text-align:center"><div class="big red">8<span style="font-size:60px">%</span></div><p class="say"><img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/googlegemini.svg" style="height:26px;display:inline;vertical-align:middle" alt="Gemini"> 생성형 AI에 직접 질문</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <p class="say"><b>FNR</b>(주의놓침률) — 정답이 주의인 항목 중 놓친 비율</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div><img class="ph" style="height:180px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Phat_Thai_kung_Chang_Khien_street_stall.jpg?width=500" alt="팟타이"><p class="say" style="font-size:22px">팟타이 → <b class="red">밀</b> 놓침</p></div>
+        <div><img class="ph" style="height:180px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Espaguetis_carbonara.jpg?width=500" alt="카르보나라"><p class="say" style="font-size:22px">카르보나라 → <b class="red">돼지고기</b> 놓침</p></div>
+      </div>
+      <p class="say">3번 물어도 똑같이 놓쳤다. 체크리스트는 <b>근거</b>("재료에 soy sauce")가 남는다.</p>
+    </div>
+  </div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 16 결과 ② -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>결과 ② 주의놓침 −77%</h1><div class="en">Test photos, 5,500 images</div></div>
+  <div class="bd c2">
+    <div style="text-align:center"><div class="big"><span class="mute">358</span> → <span class="red">81</span></div><p class="say" style="margin-top:20px">시험 사진 5,500장에서 놓친 칸 수<br>1등만 믿을 때 → 찍먹 (애매하면 합치기)</p></div>
+    <table>
+      <tr><th>방식</th><th class="n">놓친 건수 (FN)</th><th class="n">FPR</th></tr>
+      <tr><td>1등만 믿기</td><td class="n">358</td><td class="n">0.2%</td></tr>
+      <tr class="hl"><td>찍먹</td><td class="n">81</td><td class="n">1.0%</td></tr>
+      <tr><td>항상 3개 합치기</td><td class="n">43</td><td class="n red">8.2%</td></tr>
+    </table>
+  </div>
+  <div class="ft">확신이 없을 때만 합쳐서, 경고를 너무 늘리지 않으면서 놓침을 크게 줄임 · 부록 E</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 17 오류 분석 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>오류 분석 (주의놓침 617 → 81)</h1><div class="en">Error analysis</div></div>
+  <div class="bd" style="gap:30px">
+    <div class="c3">
+      <div class="tile" style="padding:0"><img class="ph" style="height:200px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Khao_Soi_Northern_Thai_food_%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%8B%E0%B8%AD%E0%B8%A2_%E0%B8%9C%E0%B8%B1%E0%B8%81%E0%B8%94%E0%B8%AD%E0%B8%87.jpg?width=600" alt="카오소이"><div style="padding:22px 26px"><h3>① 카오소이</h3><p>치킨 커리로 착각(61%)<br>→ 애매하면 <b>CLIP도 같이</b> 본다</p></div></div>
+      <div class="tile" style="padding:0"><img class="ph" style="height:200px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Dried_soba_noodles_by_FotoosVanRobin.jpg?width=600" alt="소바"><div style="padding:22px 26px"><h3>② 소바</h3><p>라멘으로 확신(97%)<br>→ 확신해도 <b>CLIP 확인</b> (코드 ③)</p></div></div>
+      <div class="tile" style="padding:0"><img class="ph" style="height:200px" src="https://commons.wikimedia.org/wiki/Special:FilePath/Tiramisu_-_Raffaele_Diomede.jpg?width=600" alt="티라미수"><div style="padding:22px 26px"><h3>③ 바클라바 · 티라미수</h3><p>밀을 놓침 → 체크리스트에<br><b>필로 반죽 · 레이디핑거</b>가 없었음</p></div></div>
+    </div>
+    <div><div class="file">knowledge/rules.py (발췌) · 2026-11-17 추가 → 175종 표 전체 다시 계산</div>
+<pre><span class="s">'밀'</span>: (<span class="s">'wheat|flour|bread|pasta|noodle|soy sauce'</span>
+       <span class="s">'<b class="red">|phyllo|ladyfinger|pastry|dough|crust</b> ...'</span>,   <span class="c"># ← 추가</span>
+       <span class="s">'rice flour|rice noodle|corn tortilla ...'</span>)      <span class="c"># 제외: 쌀가루 등</span></pre></div>
+  </div>
+  <div class="ft">사진: Wikimedia Commons</div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 18 실제 화면 (팀원 캡처로 채움) -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>실제 화면</h1><div class="en">Demo</div></div>
+  <div class="bd c2" style="align-items:stretch">
+    <div class="blank" style="height:700px">앱 캡처 ① 아는 음식<br><span style="font-size:20px">팀원에게 받아서 넣을 자리</span></div>
+    <div class="blank" style="height:700px">앱 캡처 ② 처음 보는 음식<br><span style="font-size:20px">팀원에게 받아서 넣을 자리</span></div>
+  </div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 19 정리 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>결론 · 한계 · 향후 계획</h1><div class="en">Conclusion</div></div>
+  <div class="bd c3">
+    <div class="tile"><div class="tag" style="background:var(--ok)">잘 된 것</div><p style="font-size:26px;line-height:1.7">· 체크리스트 판정이 AI 직접 판정보다 <b>덜 놓침</b> (2% vs 8%)<br>· 두 AI 감시로 <b>착각을 잡음</b> (358 → 81)</p></div>
+    <div class="tile"><div class="tag r">안 된 것</div><p style="font-size:26px;line-height:1.7">· CLIP 추가 공부는 <b>효과 없음</b><br>· 처음 보는 음식 알아채기는 아직 약함<br>· 한식은 레시피가 적어 "정보 부족"</p></div>
+    <div class="tile"><div class="tag">다음</div><p style="font-size:26px;line-height:1.7">· 한식 레시피 데이터 보강<br>· 처음 보는 음식 감지 학습<br>· 정답지 음식 수 늘리기</p></div>
+  </div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 20 역할 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>역할 분담</h1><div class="en">Team roles</div></div>
+  <div class="bd c4">
+    <div class="tile"><h3>박중현</h3><p>레시피 찾는 AI (CLIP 1·2차)<br>두 AI 연결 · 판정 흐름<br>발표 자료</p></div>
+    <div class="tile"><h3>주한솔</h3><p>메뉴 외운 AI<br>(ConvNeXt 학습 · 실험 4회)</p></div>
+    <div class="tile"><h3>김유라</h3><p>생성형 AI 연결 · 앱 배포<br>CLIP 3차 실험</p></div>
+    <div class="tile"><h3>서준영</h3><p>정답지 · 평가<br>앱 화면</p></div>
+  </div>
+  <div class="ft logos" style="gap:22px">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/python.svg" style="height:26px" alt="Python">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/pytorch.svg" style="height:26px" alt="PyTorch">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/googlecolab.svg" style="height:26px" alt="Colab">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/fastapi.svg" style="height:26px" alt="FastAPI">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/ngrok.svg" style="height:26px" alt="ngrok">
+    <img src="https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/github.svg" style="height:26px" alt="GitHub">
+  </div>
+  <div class="pg"></div>
+</div></section>
+
+<!-- 출처 -->
+<section class="slide"><div class="card">
+  <div class="hd"><h1>출처</h1><div class="en">References</div></div>
+  <div class="bd" style="justify-content:flex-start;padding-top:56px">
+    <ul style="font-size:24px;line-height:1.9;list-style:none;color:var(--sub)">
+      <li>Bossard, Guillaumin, Van Gool. Food-101 – Mining Discriminative Components with Random Forests. ECCV 2014</li>
+      <li>Liu et al. A ConvNet for the 2020s (ConvNeXt). CVPR 2022</li>
+      <li>Radford et al. Learning Transferable Visual Models From Natural Language Supervision (CLIP). ICML 2021</li>
+      <li>Guo et al. On Calibration of Modern Neural Networks. ICML 2017</li>
+      <li>Wortsman et al. Robust Fine-tuning of Zero-shot Models (WiSE-FT). CVPR 2022</li>
+      <li>He et al. ResNet, CVPR 2016 · Tan &amp; Le. EfficientNetV2, ICML 2021 · Dosovitskiy et al. ViT, ICLR 2021</li>
+      <li>식품 등의 표시·광고에 관한 법률 시행규칙 [별표 2] (알레르기 유발물질 표시 대상)</li>
+      <li>레시피 데이터: Kaggle shlokpatel0812 (Recipe1M+ 파생) — 원 출처 확인 필요</li>
+      <li>음식 사진·CLIP 그림·로고: Wikimedia Commons, Simple Icons · 모델 구조 그림: 각 논문 (중간 발표 재사용)</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- ===== 부록 ===== -->
+<section class="slide div"><div class="card"><div class="title">부록</div><p class="say" style="margin-top:24px">중간 발표 EDA · 세부 실험 · 평가 세부</p></div></section>
+
+<section class="slide"><div class="card">
+  <div class="hd"><h1>부록 A · 중간 발표 EDA 요약</h1><div class="en">Appendix A</div></div>
+  <div class="bd c2">
+    <div><img src="img/mid/p13_0.png" style="max-height:520px;margin:0 auto" alt="사진 전처리 전후"><div class="cap" style="text-align:center">사진 전처리: 짧은 변 256 → 가운데 224×224</div></div>
+    <table style="font-size:23px">
+      <tr><th>EDA 발견</th><th>처리</th></tr>
+      <tr><td>음식마다 1,000장 · 224px 미만 14장 · 흑백 3장</td><td>흑백(라벨 오류) 삭제, 크기 통일</td></tr>
+      <tr><td>레시피 18칸 중 사용 9칸 결측 0%</td><td>미사용 칸만 삭제</td></tr>
+      <tr><td>재료 Top30 중 8개가 알레르기 관련</td><td>재료 원문 + 단어 규칙</td></tr>
+      <tr><td>신뢰도 none = 나트륨 0 · 9,500mg 이상 급증</td><td>none·low 영양값, 9,500mg↑ 나트륨 제외</td></tr>
+      <tr><td>이름만 같은 다른 요리 14,641개</td><td>규칙으로 제외</td></tr>
+      <tr><td>레시피 30개 미만 3종</td><td>"정보 부족" 표시</td></tr>
+    </table>
+  </div>
+  <div class="pg">A</div>
+</div></section>
+
+<section class="slide"><div class="card">
+  <div class="hd"><h1>부록 B · ConvNeXt-Base 실험 기록</h1><div class="en">Appendix B</div></div>
+  <div class="bd c55" style="align-items:start">
+    <table style="font-size:23px">
+      <tr><th>실험</th><th>바꾼 것</th><th class="n">val</th><th class="n">test</th></tr>
+      <tr><td>Tiny</td><td>처음 모델 (ImageNet-1K 사전학습)</td><td class="n">85.39</td><td class="n">89.19</td></tr>
+      <tr><td>exp001</td><td>Base, lr 1e-4, Mixup/CutMix, EMA, 12에폭</td><td class="n">89.39</td><td class="n">93.08</td></tr>
+      <tr><td>exp002</td><td>Mixup/CutMix 끔</td><td class="n">89.40</td><td class="n">93.15</td></tr>
+      <tr><td>exp003</td><td>lr 1e-4 → 2e-4</td><td class="n">89.91</td><td class="n">93.37</td></tr>
+      <tr class="hl"><td>exp004 (앱)</td><td>최대 24에폭 + 얼리스탑 → 12에폭 최고</td><td class="n">90.36</td><td class="n">93.46</td></tr>
+    </table>
+    <ul class="say" style="font-size:22px;padding-left:24px">
+      <li>AdamW wd 0.05, 층별 lr 감쇠 0.9, drop path 0.1, label smoothing 0.1, EMA 0.999, RandAugment m9</li>
+      <li>학습 68,172 · 검증 7,575 (음식당 75장) · 시험 25,250 · 라벨 오류 3장 제외 — 설정은 검증으로만 고름</li>
+      <li>12에폭 최고, 16에폭 조기 종료 · 배치 32×4=128 · 같은 가중치 재평가 93.47%</li>
+      <li>반복 실행 흔들림 0.1~0.2%p → 그보다 작은 차이는 해석하지 않음</li>
+      <li>좌우반전 TTA +0.08%p, 추론 2배 → 안 씀</li>
+      <li>EfficientNetV2-M 91.58% &lt; ConvNeXt-Base 93.08% (exp001 기준)</li>
+    </ul>
+  </div>
+  <div class="pg">B</div>
+</div></section>
+
+<section class="slide"><div class="card">
+  <div class="hd"><h1>부록 C · 확신도 보정 · 기준값</h1><div class="en">Appendix C</div></div>
+  <div class="bd c2" style="align-items:start">
+    <div style="display:flex;flex-direction:column;gap:30px">
+      <table style="font-size:23px">
+        <tr><th>보정 (temperature scaling)</th><th class="n">T</th><th class="n">NLL</th><th class="n">ECE</th></tr>
+        <tr><td>보정 전</td><td class="n">1.000</td><td class="n">0.307</td><td class="n">0.065</td></tr>
+        <tr class="hl"><td>보정 후</td><td class="n">0.838</td><td class="n">0.259</td><td class="n">0.017</td></tr>
+      </table>
+      <table style="font-size:23px">
+        <tr><th>처음 보는 음식 감지</th><th class="n">AUROC</th></tr>
+        <tr><td>확신도 (MSP, 보정)</td><td class="n">0.880</td></tr>
+        <tr><td>energy (보정)</td><td class="n">0.859</td></tr>
+        <tr><td>같은 사진 종류끼리 (05-2)</td><td class="n">≈0.66</td></tr>
+      </table>
+    </div>
+    <table style="font-size:23px">
+      <tr><th>1등만 믿는 기준</th><th class="n">0.8</th><th class="n">0.95 (앱)</th></tr>
+      <tr><td>처음 보는 음식 놓침</td><td class="n">9.4%</td><td class="n">8.0%</td></tr>
+      <tr><td>아는 음식 놓침</td><td class="n">5.0%</td><td class="n">2.8%</td></tr>
+      <tr><td>처음 보는 음식 과경고</td><td class="n">13.9%</td><td class="n">15.3%</td></tr>
+      <tr><td>아는 음식 과경고</td><td class="n">5.4%</td><td class="n">7.3%</td></tr>
+      <tr class="hl"><td>처음 보는 음식이 1등으로 바로 판정</td><td class="n">21.3%</td><td class="n">11.7%</td></tr>
+    </table>
+  </div>
+  <div class="ft">T=0.838은 exp003에서 구한 값을 exp004에 사용 · 04-4: 처음 보는 음식 300장 · 아는 음식 188장</div>
+  <div class="pg">C</div>
+</div></section>
+
+<section class="slide"><div class="card">
+  <div class="hd"><h1>부록 D · CLIP 파인튜닝 상세</h1><div class="en">Appendix D</div></div>
+  <div class="bd">
+    <table style="font-size:24px">
+      <tr><th>시도</th><th>방법</th><th class="n">레시피 검색 top-1<br>(처음 보는 / 아는)</th><th class="n">처음 보는<br>top-5</th><th class="n">주의 놓침<br>(처음 보는 / 아는)</th></tr>
+      <tr><td>원래 CLIP</td><td>학습 없음</td><td class="n">0.492 / 0.628</td><td class="n">0.735</td><td class="n">0.085 / 0.056</td></tr>
+      <tr><td>1차 (04)</td><td>전체 대조 학습</td><td class="n">0.471 / 0.581</td><td class="n">0.683</td><td class="n red">0.115 / 0.062</td></tr>
+      <tr><td>2차 (04-2)</td><td>같은 음식=정답 손실 + 마지막 2층 + WiSE-FT α=0.5</td><td class="n">0.490 / 0.640</td><td class="n">0.721</td><td class="n red">0.104 / 0.059</td></tr>
+      <tr><td>3차 (유라)</td><td>1·2·4블록 × lr 3e-6·1e-5, WiSE-FT α=0.6</td><td class="n">0.474 / 0.641</td><td class="n">–</td><td class="n red">0.109 / 0.059</td></tr>
+    </table>
+  </div>
+  <div class="ft">원래 CLIP 놓침은 실험마다 0.085~0.090 / 0.052~0.056 (사진 표본 차이) · 1차 원인: 같은 음식 레시피끼리 밀어냄 + 전체 층 학습 → 과적합 (검증 손실 1.352 → 1.505)</div>
+  <div class="pg">D</div>
+</div></section>
+
+<section class="slide"><div class="card">
+  <div class="hd"><h1>부록 E · 평가 세부</h1><div class="en">Appendix E</div></div>
+  <div class="bd c2" style="align-items:start">
+    <table style="font-size:23px">
+      <tr><th>시험 사진 5,500장</th><th class="n">주의놓침</th><th class="n">괜한 주의</th></tr>
+      <tr><td>정답 음식을 알 때</td><td class="n">0</td><td class="n">0</td></tr>
+      <tr><td>1등만</td><td class="n">358 (2.0%)</td><td class="n">183 (0.2%)</td></tr>
+      <tr class="hl"><td>찍먹 (애매하면 합치기)</td><td class="n">81 (0.4%)</td><td class="n">835 (1.0%)</td></tr>
+      <tr><td>항상 3개 합치기</td><td class="n">43 (0.2%)</td><td class="n">7,100 (8.2%)</td></tr>
+    </table>
+    <ul class="say" style="font-size:22px;padding-left:24px">
+      <li>정답지: 28종(Food-101 22 + 새 음식 6) × 19항목, 외부 레시피 3개 중 2개 이상이면 1</li>
+      <li>"정답 음식을 알 때 0"은 정답지로 규칙 누락을 찾아 고친 결과 (낙관적)</li>
+      <li>고친 재료: phyllo, ladyfinger, pastry, dough, crust, mascarpone 등 → 175종 중 15칸 판정 변경</li>
+      <li>나트륨 "높음": 1인분 1,000mg 이상 (하루 2,000mg의 절반) → 175종 중 59종</li>
+    </ul>
+  </div>
+  <div class="pg">E</div>
+</div></section>
+
+<section class="slide"><div class="card">
+  <div class="hd"><h1>부록 F · 코드 · 자료 확인 링크</h1><div class="en">Appendix F · reproducibility</div></div>
+  <div class="bd" style="gap:26px">
+    <table class="lk" style="font-size:23px">
+      <tr><th>무엇</th><th>어디</th><th>링크</th></tr>
+      <tr><td><b>최종 제출 노트북</b> · ConvNeXt 가중치 · CLIP 검색 목록</td><td>GitHub <code>notebooks/</code><br><span class="mute">+ 제출 폴더 [딥러닝]최종제출_5조</span></td><td><a href="https://github.com/yura103/deeplearning_5/blob/main/notebooks/%EC%B0%8D%EB%A8%B9_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EC%BD%94%EB%93%9C%EC%A0%95%EB%A6%AC.ipynb">notebooks/찍먹_딥러닝_코드정리.ipynb</a><br><span class="mute">가중치 · 검색 목록은 제출 폴더에 포함</span></td></tr>
+      <tr><td><b>앱 판정 코드</b> (judge.py · rules.py · search.py)</td><td>GitHub <code>knowledge/</code></td><td><a href="https://github.com/yura103/deeplearning_5/tree/main/knowledge">github.com/yura103/deeplearning_5/tree/main/knowledge</a></td></tr>
+      <tr><td><b>실험 노트북</b> (EDA 01 · CLIP 04~04-4 · 보정 05)</td><td>GitHub <code>notebooks/</code></td><td><a href="https://github.com/yura103/deeplearning_5/tree/main/notebooks">github.com/yura103/deeplearning_5/tree/main/notebooks</a></td></tr>
+      <tr><td><b>평가 정답지 · 비교</b></td><td>GitHub <code>evaluation/</code></td><td><a href="https://github.com/yura103/deeplearning_5/tree/main/evaluation">github.com/yura103/deeplearning_5/tree/main/evaluation</a></td></tr>
+      <tr><td><b>웹 앱</b> (backend · frontend)</td><td>GitHub 저장소 전체</td><td><a href="https://github.com/yura103/deeplearning_5">github.com/yura103/deeplearning_5</a></td></tr>
+      <tr><td>공개 모델 · 데이터</td><td>원 배포처</td><td><a href="https://huggingface.co/timm/convnext_base.fb_in22k_ft_in1k">timm/convnext_base.fb_in22k_ft_in1k</a> · <a href="https://huggingface.co/openai/clip-vit-base-patch32">openai/clip-vit-base-patch32</a> · <a href="https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/">Food-101</a></td></tr>
+    </table>
+  </div>
+  <div class="ft">레시피 원문 · 사진 · 모델 가중치는 재배포 제한 때문에 GitHub에 올리지 않음 → 가중치·검색 목록은 최종 제출 폴더에 포함</div>
+  <div class="pg">F</div>
+</div></section>
+
+</div>
+<script>
+// 화면에서만: 슬라이드를 창 너비에 맞춰 줄임 (인쇄에는 영향 없음)
+document.querySelectorAll('.slide').forEach(s => { const w = document.createElement('div'); w.className = 'fit'; s.before(w); w.append(s); });
+const fit = () => document.documentElement.style.setProperty('--s', Math.min(1, (innerWidth - 48) / 1920));
+addEventListener('resize', fit); fit();
+// 본편 쪽 번호 자동 (부록은 글자 그대로)
+document.querySelectorAll('.slide').forEach((s, i) => { const p = s.querySelector('.pg'); if (p && !p.textContent) p.textContent = String(i + 1).padStart(2, '0'); });
+</script>
+</body>
+</html>
